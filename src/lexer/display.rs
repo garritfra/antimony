@@ -1,8 +1,9 @@
- use crate::lexer::{Keyword, TokenKind, Value};
+
+use crate::lexer::{Keyword, TokenKind, Value};
 
 impl std::fmt::Display for Keyword {
-     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-         match self {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
             Keyword::Let => write!(f, "let"),
             Keyword::If => write!(f, "if"),
             Keyword::Else => write!(f, "else"),
@@ -20,16 +21,16 @@ impl std::fmt::Display for Keyword {
             Keyword::Import => write!(f, "import"),
             Keyword::Selff => write!(f, "self"), // "self"
             Keyword::Unknown => write!(f, "unknown"),
-         }
-     }
- }
+        }
+    }
+}
 
 impl std::fmt::Display for TokenKind {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             TokenKind::Whitespace => write!(f, "whitespace"),
             TokenKind::CarriageReturn => write!(f, "\\n"),
-            TokenKind::Identifier(id) => write!(f, "{id}"), 
+            TokenKind::Identifier(id) => write!(f, "{id}"),
             TokenKind::Literal(value) => write!(f, "{value}"),
             TokenKind::Keyword(keyword) => write!(f, "{keyword}"),
             TokenKind::Comment => write!(f, "comment"),
@@ -69,7 +70,6 @@ impl std::fmt::Display for TokenKind {
     }
 }
 
-
 impl std::fmt::Display for Value {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -78,4 +78,3 @@ impl std::fmt::Display for Value {
         }
     }
 }
-

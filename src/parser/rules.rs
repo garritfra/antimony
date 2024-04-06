@@ -69,10 +69,12 @@ impl Parser {
                 }
                 TokenKind::Identifier(_) => fields.push(self.parse_typed_variable()?),
                 _ => {
-                    let mut error = self.make_error_msg(next.pos, "Expected struct field or method".into());
-                    let hint = self.make_hint_msg(format!("remove the following symbol `{}`", next.raw));
+                    let mut error =
+                        self.make_error_msg(next.pos, "Expected struct field or method".into());
+                    let hint =
+                        self.make_hint_msg(format!("remove the following symbol `{}`", next.raw));
                     error.push_str(&hint);
-                    return Err(error)
+                    return Err(error);
                 }
             }
         }
@@ -473,10 +475,14 @@ impl Parser {
 
             let last = self.peek()?;
             if last.kind != TokenKind::CurlyBracesClose {
-                let mut error = self.make_error_msg(last.pos, "Expected a struct field initialization or a closing curly brace (`}`)".into());
-                let hint = self.make_hint_msg(format!("remove the following symbol `{}`", last.raw));
+                let mut error = self.make_error_msg(
+                    last.pos,
+                    "Expected a struct field initialization or a closing curly brace (`}`)".into(),
+                );
+                let hint =
+                    self.make_hint_msg(format!("remove the following symbol `{}`", last.raw));
                 error.push_str(&hint);
-                return Err(error)
+                return Err(error);
             }
         }
 

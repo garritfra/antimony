@@ -102,8 +102,12 @@ impl Parser {
         match &token.kind {
             TokenKind::Keyword(ref k) if k == &keyword => Ok(()),
             _ => {
-                let mut error = self.make_error_msg(token.pos, format!("Expected keyword, found {}", token.raw));
-                let hint = self.make_hint_msg(format!("replace the symbol `{}` with the appropriate keyword. ", token.raw));
+                let mut error = self
+                    .make_error_msg(token.pos, format!("Expected keyword, found {}", token.raw));
+                let hint = self.make_hint_msg(format!(
+                    "replace the symbol `{}` with the appropriate keyword. ",
+                    token.raw
+                ));
                 error.push_str(&hint);
                 Err(error)
             }
@@ -119,8 +123,11 @@ impl Parser {
         match &token.kind {
             TokenKind::Identifier(n) => Ok(n.to_string()),
             other => {
-                let mut error = self.make_error_msg(token.pos, format!("Expected Identifier, found `{other}`",));
-                let hint = self.make_hint_msg(format!("replace the symbol `{other}` with an identifier. Example `Foo`"));
+                let mut error = self
+                    .make_error_msg(token.pos, format!("Expected Identifier, found `{other}`",));
+                let hint = self.make_hint_msg(format!(
+                    "replace the symbol `{other}` with an identifier. Example `Foo`"
+                ));
                 error.push_str(&hint);
                 Err(error)
             }
