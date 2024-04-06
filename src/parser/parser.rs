@@ -112,9 +112,11 @@ impl Parser {
         let token = self.next()?;
         match &token.kind {
             TokenKind::Identifier(n) => Ok(n.to_string()),
-            other => {
-                Err(self
-                    .make_error_msg(token.pos, format!("Expected Identifier, found {:?}", other)))
+            _ => {
+                let mut error = self.make_error_msg(token.pos, format!("Expected Identifier, found {}", token.raw));
+                let hint = self.make_hint_msg(format!("replace the symbol `{}` with an identifier. Example `Foo`", token.raw));
+                error.push_str(&hint);
+                Err(error)
             }
         }
     }
