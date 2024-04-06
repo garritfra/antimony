@@ -101,13 +101,19 @@ impl Parser {
         let token = self.next()?;
         match &token.kind {
             TokenKind::Keyword(ref k) if k == &keyword => Ok(()),
-            _ => Err(self.make_error(TokenKind::SemiColon, token)),
+            _ => {
+                let mut error = self.make_error_msg(token.pos, format!("Expected keyword, found {}", token.raw));
+                let hint = self.make_hint_msg(format!("replace the symbol `{}` with the appropriate keyword. ", token.raw));
+                error.push_str(&hint);
+                Err(error)
+            }
         }
     }
 
     pub(super) fn match_operator(&mut self) -> Result<BinOp, String> {
         BinOp::try_from(self.next()?.kind)
     }
+
     pub(super) fn match_identifier(&mut self) -> Result<String, String> {
         let token = self.next()?;
         match &token.kind {
@@ -124,7 +130,7 @@ impl Parser {
     pub(super) fn make_error(&mut self, token_kind: TokenKind, other: Token) -> String {
         self.make_error_msg(
             other.pos,
-            format!("Token {:?} not found, found {:?}", token_kind, other),
+            format!("Token `{token_kind}` not found, found `{}`", other.raw),
         )
     }
 

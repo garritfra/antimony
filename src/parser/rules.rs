@@ -402,7 +402,7 @@ impl Parser {
             TokenKind::SquareBraceOpen => self.parse_array()?,
             // new Foo {}
             TokenKind::Keyword(Keyword::New) => self.parse_struct_initialization()?,
-            other => return Err(format!("Expected Expression, found {:?}", other)),
+            other => return Err(format!("Expected Expression, found `{other}`")),
         };
 
         // Check if the parsed expression continues
