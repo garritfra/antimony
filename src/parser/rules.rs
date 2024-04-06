@@ -166,10 +166,12 @@ impl Parser {
             TokenKind::Assign => self.parse_inline_function()?,
             _ => {
                 let token = self.peek()?;
+                let token_kind = token.kind;
                 let mut error = self.make_error_msg(
                     token.pos,
-                    format!("Expected `{{` or `=`, got {}", token.raw),
+                    format!("Expected `{{` or `=`, got `{token_kind}`",),
                 );
+
                 let hint = self.make_hint_msg(format!(
                     "Try the following:\nfn {name}(...) = expression\nOr\nfn {name}(...) {{ ... }}"
                 ));

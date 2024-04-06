@@ -118,9 +118,9 @@ impl Parser {
         let token = self.next()?;
         match &token.kind {
             TokenKind::Identifier(n) => Ok(n.to_string()),
-            _ => {
-                let mut error = self.make_error_msg(token.pos, format!("Expected Identifier, found {}", token.raw));
-                let hint = self.make_hint_msg(format!("replace the symbol `{}` with an identifier. Example `Foo`", token.raw));
+            other => {
+                let mut error = self.make_error_msg(token.pos, format!("Expected Identifier, found `{other}`",));
+                let hint = self.make_hint_msg(format!("replace the symbol `{other}` with an identifier. Example `Foo`"));
                 error.push_str(&hint);
                 Err(error)
             }
@@ -128,9 +128,10 @@ impl Parser {
     }
 
     pub(super) fn make_error(&mut self, token_kind: TokenKind, other: Token) -> String {
+        let other_kind = &other.kind;
         self.make_error_msg(
             other.pos,
-            format!("Token `{token_kind}` not found, found `{}`", other.raw),
+            format!("Token `{token_kind}` not found, found `{other_kind}`"),
         )
     }
 
