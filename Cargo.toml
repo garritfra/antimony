@@ -19,7 +19,7 @@ llvm = ["inkwell"]
 
 [dependencies]
 structopt = "0.3.26"
-rust-embed = "5.7.0"
+rust-embed = "8.5.0"
 inkwell = { version = "0.4.0", features = ["llvm10-0"], optional = true }
 qbe = "1.0.0"
 regex = "1.10.4"
