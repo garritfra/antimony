@@ -129,6 +129,7 @@ pub enum TokenKind {
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Value {
     Int,
+    Float,
     Str(String),
 }
 
@@ -365,24 +366,27 @@ impl Cursor<'_> {
     }
 
     fn number(&mut self) -> TokenKind {
-        match self.first() {
+        let value_kind = match self.first() {
             'b' => {
                 self.bump();
                 self.eat_binary_digits();
+                Value::Int
             }
             'o' => {
                 self.bump();
                 self.eat_octal_digits();
+                Value::Int
             }
             'x' => {
                 self.bump();
                 self.eat_hex_digits();
+                Value::Int
             }
             _ => {
-                self.eat_digits();
+                self.eat_digits()
             }
         };
-        TokenKind::Literal(Value::Int)
+        TokenKind::Literal(value_kind)
     }
 
     fn string(&mut self, end: char) -> Result<TokenKind, String> {
@@ -428,21 +432,21 @@ impl Cursor<'_> {
         TokenKind::Comment
     }
 
-    fn eat_digits(&mut self) -> bool {
-        let mut has_digits = false;
+    fn eat_digits(&mut self) -> Value {
+        let mut value_kind = Value::Int;
         loop {
             match self.first() {
-                '_' => {
+                '0'..='9' | '_' => {
                     self.bump();
                 }
-                '0'..='9' => {
-                    has_digits = true;
+                '.' => {
+                    value_kind = Value::Float;
                     self.bump();
                 }
                 _ => break,
             }
         }
-        has_digits
+        value_kind
     }
 
     fn eat_binary_digits(&mut self) -> bool {

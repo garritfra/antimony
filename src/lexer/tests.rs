@@ -342,3 +342,42 @@ fn fib() {}
         }
     );
 }
+
+#[test]
+fn test_floats() {
+    let mut tokens = tokenize("1.23").unwrap().into_iter();
+
+    assert_eq!(
+        tokens.next().unwrap(),
+        Token {
+            len: 4,
+            kind: TokenKind::Literal(Value::Float),
+            raw: "1.23".to_owned(),
+            pos: Position {
+                raw: 3,
+                line: 1,
+                offset: 3
+            }
+        }
+    );
+}
+
+#[test]
+#[ignore]
+fn test_negative_floats() {
+    let mut tokens = tokenize("-1.23").unwrap().into_iter();
+
+    assert_eq!(
+        tokens.next().unwrap(),
+        Token {
+            len: 4,
+            kind: TokenKind::Literal(Value::Float),
+            raw: "-1.23".to_owned(),
+            pos: Position {
+                raw: 4,
+                line: 1,
+                offset: 4
+            }
+        }
+    );
+}
