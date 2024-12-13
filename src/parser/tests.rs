@@ -1034,3 +1034,29 @@ fn test_array_capacity() {
     let tree = parse(tokens, Some(raw.to_string()));
     assert!(tree.is_ok());
 }
+
+#[test]
+fn test_errors_for_struct_decl() {
+    let raw = 
+    "struct Foo {
+        index: int,
+        value: int
+    }";
+    let tokens = tokenize(raw).unwrap();
+    let tree = parse(tokens, Some(raw.to_string()), "".into());
+    assert!(tree.is_err());
+}
+
+
+#[test]
+fn test_errors_for_struct_literal() {
+    let raw = 
+    "let foo = new Foo {
+        index: 100,
+        value: 200
+    }";
+    let tokens = tokenize(raw).unwrap();
+    let tree = parse(tokens, Some(raw.to_string()), "".into());
+    assert!(tree.is_err());
+}
+

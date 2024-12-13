@@ -99,28 +99,44 @@ impl Parser {
         let token = self.next()?;
         match &token.kind {
             TokenKind::Keyword(ref k) if k == &keyword => Ok(()),
-            _ => Err(self.make_error(TokenKind::SemiColon, token)),
+            _ => {
+                let mut error = self
+                    .make_error_msg(token.pos, format!("Expected keyword, found {}", token.raw));
+                let hint = self.make_hint_msg(format!(
+                    "replace the symbol `{}` with the appropriate keyword. ",
+                    token.raw
+                ));
+                error.push_str(&hint);
+                Err(error)
+            }
         }
     }
 
     pub(super) fn match_operator(&mut self) -> Result<BinOp, String> {
         BinOp::try_from(self.next()?.kind)
     }
+
     pub(super) fn match_identifier(&mut self) -> Result<String, String> {
         let token = self.next()?;
         match &token.kind {
             TokenKind::Identifier(n) => Ok(n.to_string()),
             other => {
-                Err(self
-                    .make_error_msg(token.pos, format!("Expected Identifier, found {:?}", other)))
+                let mut error = self
+                    .make_error_msg(token.pos, format!("Expected Identifier, found `{other}`",));
+                let hint = self.make_hint_msg(format!(
+                    "replace the symbol `{other}` with an identifier. Example `Foo`"
+                ));
+                error.push_str(&hint);
+                Err(error)
             }
         }
     }
 
     pub(super) fn make_error(&mut self, token_kind: TokenKind, other: Token) -> String {
+        let other_kind = &other.kind;
         self.make_error_msg(
             other.pos,
-            format!("Token {:?} not found, found {:?}", token_kind, other),
+            format!("Token `{token_kind}` not found, found `{other_kind}`"),
         )
     }
 

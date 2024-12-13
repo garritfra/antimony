@@ -87,3 +87,57 @@ fn test_testcases() -> Result<(), Error> {
     assert!(success, "{:?}", &in_file);
     Ok(())
 }
+
+
+#[test]
+fn test_struct_decl_error() -> Result<(), Error> {
+    let dir = std::env::current_dir().unwrap();
+
+    let in_file = dir.join("tests/struct_decl_err.sb");
+    let success = Command::new("cargo")
+        .arg("run")
+        .arg("run")
+        .arg(&in_file)
+        .spawn()?
+        .wait()?
+        .success();
+
+    assert!(!success);
+    Ok(())
+}
+
+#[test]
+fn test_struct_instance_error() -> Result<(), Error> {
+    let dir = std::env::current_dir().unwrap();
+
+    let in_file = dir.join("tests/struct_instance_err.sb");
+    let success = Command::new("cargo")
+        .arg("run")
+        .arg("run")
+        .arg(&in_file)
+        .spawn()?
+        .wait()?
+        .success();
+
+    assert!(!success);
+    Ok(())
+}
+
+
+#[test]
+fn test_inline_function_error() -> Result<(), Error> {
+    let dir = std::env::current_dir().unwrap();
+
+    let in_file = dir.join("tests/inline_function_err.sb");
+    let success = Command::new("cargo")
+        .arg("run")
+        .arg("run")
+        .arg(&in_file)
+        .spawn()?
+        .wait()?
+        .success();
+
+    assert!(!success);
+    Ok(())
+}
+

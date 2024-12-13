@@ -21,6 +21,8 @@ use cursor::Cursor;
 #[cfg(test)]
 mod tests;
 
+mod display;
+
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Token {
     pub kind: TokenKind,
